@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interaktiv Lommeregner med Forklaringer</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 50px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  #container {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    gap: 20px;
+  }
+  #calculator {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    flex: 1;
+  }
+  #display {
+    width: 100%;
+    padding: 10px;
+    padding-right: 0%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #e6e6e6;
+    border: none;
+    font-size: 2em;
+    text-align: right;
+  }
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .button {
+    flex: 1;
+    padding: 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    background-color: #9fe8fa;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  .button:last-child {
+    margin-right: 0;
+  }
+  .button:active {
+    background-color: #7ecbdc;
+  }
+  #explanationPopup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    flex: 1;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  .section h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  .section p, .section ul {
+    margin: 0;
+    color: #555;
+  }
+  .section ul {
+    padding-left: 20px;
+  }
+  .section code {
+    display: block;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .section code .code {
+    color: #d63384; /* Farve til koden */
+  }
+  .section code .comment {
+    color: #6a737d; /* Farve til kommentarer */
+  }
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div id="calculator">
+    <input type="text" id="display" disabled>
+    <div class="button-row">
+      <button class="button" onclick="press('1')">1</button>
+      <button class="button" onclick="press('2')">2</button>
+      <button class="button" onclick="press('3')">3</button>
+      <button class="button" onclick="press('+')">+</button>
+    </div>
+    <div class="button-row">
+      <button class="button" onclick="press('4')">4</button>
+      <button class="button" onclick="press('5')">5</button>
+      <button class="button" onclick="press('6')">6</button>
+      <button class="button" onclick="press('-')">-</button>
+    </div>
+    <div class="button-row">
+      <button class="button" onclick="press('7')">7</button>
+      <button class="button" onclick="press('8')">8</button>
+      <button class="button" onclick="press('9')">9</button>
+      <button class="button" onclick="press('*')">*</button>
+    </div>
+    <div class="button-row">
+      <button class="button" onclick="clearDisplay()">C</button>
+      <button class="button" onclick="press('0')">0</button>
+      <button class="button" onclick="press('.')">.</button>
+      <button class="button" onclick="press('/')">/</button>
+    </div>
+    <div class="button-row">
+      <button class="button" style="flex: 1" onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <div id="explanationPopup">
+    <div class="section">
+      <h3>1. Variabler</h3>
+      <p>Variabler bruges til at gemme data. I denne lommeregner bruger vi variablen <code class="code">currentInput</code> til at holde styr på brugerens indtastning. En variabel er som en beholder, der holder information, som kan ændre sig over tid.</p>
+      <code>
+<span class="comment">// Deklaration af en variabel</span><br>
+<span class="code">let currentInput = "";</span><br><br>
+<span class="comment">// Eksempel på brug af variablen</span><br>
+<span class="code">function press(num) {</span><br>
+  <span class="code">currentInput += num;</span> <span class="comment">// Sammenkæder det indtastede nummer med den nuværende input</span><br>
+  <span class="code">document.getElementById("display").value = currentInput;</span> <span class="comment">// Opdaterer displayet</span><br>
+<span class="code">}</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>2. Datatyper</h3>
+      <p>Forskellige datatyper bruges i dette projekt. Her bruger vi primært strenge og tal:</p>
+      <ul>
+        <li><strong>String:</strong> Bruges til den aktuelle indtastning for at sammenkæde de tegn, brugeren indtaster.</li>
+        <li><strong>Number:</strong> Resultatet af beregningen, efter evaluering af udtrykket.</li>
+      </ul>
+      <code>
+<span class="comment">// Konvertering af resultatet til en streng</span><br>
+<span class="code">currentInput = eval(currentInput).toString();</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>4. Betingelser</h3>
+      <p>Betingelser gør det muligt for os at udføre visse kodeblokke baseret på specifikke betingelser. I denne lommeregner bruger vi betingelser til at håndtere fejl under beregningen.</p>
+      <code>
+<span class="comment">function calculateResult() {</span><br>
+  <span class="code">try {</span><br>
+    <span class="code">currentInput = eval(currentInput).toString();</span> <span class="comment">// Evaluerer udtrykket</span><br>
+    <span class="code">document.getElementById("display").value = currentInput;</span><br>
+  <span class="code">} catch (e) {</span><br>
+    <span class="code">document.getElementById("display").value = "Error";</span> <span class="comment">// Viser fejl hvis beregningen fejler</span><br>
+    <span class="code">currentInput = "";</span><br>
+  <span class="code">}</span><br>
+<span class="code">}</span>
+      </code>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentInput = "";
+
+function press(num) {
+  currentInput += num;
+  document.getElementById("display").value = currentInput;
+}
+
+function calculateResult() {
+  try {
+    currentInput = eval(currentInput).toString();
+    document.getElementById("display").value = currentInput;
+  } catch (e) {
+    document.getElementById("display").value = "Error";
+    currentInput = "";
+  }
+}
+
+function clearDisplay() {
+  currentInput = "";
+  document.getElementById("display").value = "";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forbedret Tic-Tac-Toe-spil med Forklaringer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+        #container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 20px;
+        }
+        .game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 2;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #e7e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .cell:hover {
+            background-color: #dedee3;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #5cba47;
+            color: white;
+        }
+        button:hover {
+            background-color: #4aa836;
+        }
+        #scoreboard {
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+        #explanationPopup {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            flex: 1;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .section p, .section ul {
+            margin: 0;
+            color: #555;
+        }
+        .section ul {
+            padding-left: 20px;
+        }
+        .section code {
+            display: block;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .section code .code {
+            color: #d63384; /* Farve til koden */
+        }
+        .section code .comment {
+            color: #6a737d; /* Farve til kommentarer */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="game">
+            <h2>Tic-Tac-Toe</h2>
+            <div id="scoreboard">Score - X: 0 | O: 0</div>
+            <div class="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            <button onclick="resetGame()">Reset Game</button>
+        </div>
+        <div id="explanationPopup">
+            <div class="section">
+                <h3>1. Variabler</h3>
+                <p>Variabler bruges til at gemme data. I dette spil bruger vi flere variabler som <code class="code">cells</code>, <code class="code">currentPlayer</code>, <code class="code">gameState</code> og <code class="code">scores</code> til at holde styr på spillets tilstand.</p>
+                <code>
+<span class="comment">// Vigtige variabler</span><br>
+<span class="code">let cells = document.querySelectorAll('.cell');</span><br>
+<span class="code">let currentPlayer = 'X';</span><br>
+<span class="code">let gameState = Array(9).fill('');</span><br>
+<span class="code">let scores = JSON.parse(sessionStorage.getItem('scores')) || { X: 0, O: 0 };</span>
+                </code>
+            </div>
+            <div class="section">
+                <h3>2. Datatyper</h3>
+                <p>Forskellige datatyper bruges i dette projekt, herunder arrays og objekter:</p>
+                <ul>
+                    <li><strong>Array:</strong> Bruges til at gemme spillets tilstand (<code class="code">gameState</code>).</li>
+                    <li><strong>Object:</strong> Bruges til at gemme score for spillerne (<code class="code">scores</code>).</li>
+                </ul>
+                <code>
+<span class="comment">// Initialiser spillets tilstand</span><br>
+<span class="code">let gameState = Array(9).fill('');</span><br>
+<span class="comment">// Initialiser score</span><br>
+<span class="code">let scores = { X: 0, O: 0 };</span>
+                </code>
+            </div>
+            <div class="section">
+                <h3>4. Betingelser</h3>
+                <p>Betingelser gør det muligt for os at udføre visse kodeblokke baseret på specifikke betingelser. I dette spil bruger vi betingelser til at kontrollere spillets tilstand og skifte spilleren.</p>
+                <code>
+<span class="comment">// Funktion til at flytte opgaven til næste kolonne</span><br>
+<span class="code">function moveTask(task, currentColumnId) {</span><br>
+  <span class="code">const nextColumnId = getNextColumnId(currentColumnId);</span><br>
+  <span class="code">if (nextColumnId) {</span><br>
+    <span class="code">const nextColumn = document.getElementById(nextColumnId);</span><br>
+    <span class="code">nextColumn.appendChild(task);</span><br>
+    <span class="code">task.onclick = function () { moveTask(task, nextColumnId); };</span><br>
+  <span class="code">}</span><br>
+<span class="code">}</span>
+                </code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cells = document.querySelectorAll('.cell');
+        let currentPlayer = 'X';
+        let gameState = Array(9).fill('');
+        let scores = JSON.parse(sessionStorage.getItem('scores')) || { X: 0, O: 0 };
+
+        function updateScoreboard() {
+            document.getElementById('scoreboard').textContent = `Score - X: ${scores.X} | O: ${scores.O}`;
+        }
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                if (gameState[index] === '' && !checkWin()) {
+                    gameState[index] = currentPlayer;
+                    this.textContent = currentPlayer;
+                    if (checkWin()) {
+                        alert(`Congratulations! Player ${currentPlayer} wins!`);
+                        scores[currentPlayer]++;
+                        sessionStorage.setItem('scores', JSON.stringify(scores));
+                        updateScoreboard();
+                        resetGame();
+                    }
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            });
+        });
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            return winPatterns.some(pattern => {
+                return pattern.every(index => gameState[index] === currentPlayer);
+            });
+        }
+
+        function resetGame() {
+            gameState.fill('');
+            cells.forEach(cell => cell.textContent = '');
+            currentPlayer = 'X'; // Reset the player to X after a game ends
+        }
+
+        updateScoreboard();
+    </script>
+</body>
+</html>

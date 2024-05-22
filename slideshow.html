@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interaktiv Slideshow med Forklaringer</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin: 50px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  #container {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    gap: 20px;
+  }
+  #slideshow {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    flex: 1;
+  }
+  .slideshow-container {
+    width: 100%;
+    position: relative;
+    margin: auto;
+  }
+  .mySlides {
+    display: none;
+  }
+  img {
+    vertical-align: middle;
+    width: 100%;
+  }
+  .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+  }
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+  .text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+  }
+  .numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+  }
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+  .active, .dot:hover {
+    background-color: #717171;
+  }
+  .fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  @keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+  @media only screen and (max-width: 300px) {
+    .prev, .next, .text {font-size: 11px}
+  }
+  #explanationPopup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    flex: 1;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  .section h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  .section p, .section ul {
+    margin: 0;
+    color: #555;
+  }
+  .section ul {
+    padding-left: 20px;
+  }
+  .section code {
+    display: block;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .section code .code {
+    color: #d63384; /* Farve til koden */
+  }
+  .section code .comment {
+    color: #6a737d; /* Farve til kommentarer */
+  }
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div id="slideshow">
+    <div class="slideshow-container">
+
+      <div class="mySlides fade">
+        <div class="numbertext">1 / 3</div>
+        <img src="billede1.jpg" alt="Billede 1">
+        <div class="text">Billede 1</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">2 / 3</div>
+        <img src="billede2.jpg" alt="Billede 2">
+        <div class="text">Billede 2</div>
+      </div>
+
+      <div class="mySlides fade">
+        <div class="numbertext">3 / 3</div>
+        <img src="billede3.jpg" alt="Billede 3">
+        <div class="text">Billede 3</div>
+      </div>
+
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+      <span class="dot" onclick="currentSlide(1)"></span> 
+      <span class="dot" onclick="currentSlide(2)"></span> 
+      <span class="dot" onclick="currentSlide(3)"></span> 
+    </div>
+  </div>
+
+  <div id="explanationPopup">
+    <div class="section">
+      <h3>1. Variabler</h3>
+      <p>Variabler bruges til at gemme data. I dette slideshow bruger vi variablen <code class="code">slideIndex</code> til at holde styr på den aktuelle slide. En variabel er som en beholder, der holder information, som kan ændre sig over tid.</p>
+      <code>
+<span class="comment">// Deklaration af en variabel</span><br>
+<span class="code">let slideIndex = 1;</span><br><br>
+<span class="comment">// Brug af variablen til at vise den første slide</span><br>
+<span class="code">showSlides(slideIndex);</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>2. Datatyper</h3>
+      <p>Forskellige datatyper bruges i dette projekt. Her bruger vi primært tal og objekter:</p>
+      <ul>
+        <li><strong>Number:</strong> Bruges til at gemme indekset for den aktuelle slide.</li>
+        <li><strong>Object:</strong> HTML-elementerne, der repræsenterer slides og prikker.</li>
+      </ul>
+      <code>
+<span class="comment">// Brug af number til at gemme slide-indekset</span><br>
+<span class="code">let slideIndex = 1;</span><br><br>
+<span class="comment">// Brug af object til at gemme HTML-elementer</span><br>
+<span class="code">let slides = document.getElementsByClassName("mySlides");</span><br>
+<span class="code">let dots = document.getElementsByClassName("dot");</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>4. Betingelser</h3>
+      <p>Betingelser gør det muligt for os at udføre visse kodeblokke baseret på specifikke betingelser. I dette slideshow bruger vi betingelser til at sikre, at vi skifter korrekt mellem slides.</p>
+      <code>
+<span class="comment">function showSlides(n) {</span><br>
+  <span class="code">let i;</span><br>
+  <span class="code">let slides = document.getElementsByClassName("mySlides");</span><br>
+  <span class="code">let dots = document.getElementsByClassName("dot");</span><br><br>
+  <span class="comment">// Hvis n er større end antallet af slides, start fra første slide</span><br>
+  <span class="code">if (n > slides.length) {slideIndex = 1}</span><br><br>
+  <span class="comment">// Hvis n er mindre end 1, start fra sidste slide</span><br>
+  <span class="code">if (n < 1) {slideIndex = slides.length}</span><br><br>
+  <span class="comment">// Skjul alle slides</span><br>
+  <span class="code">for (i = 0; i < slides.length; i++) {</span><br>
+    <span class="code">slides[i].style.display = "none";</span><br>
+  <span class="code">}</span><br><br>
+  <span class="comment">// Fjern "active" klassen fra alle prikker</span><br>
+  <span class="code">for (i = 0; i < dots.length; i++) {</span><br>
+    <span class="code">dots[i].className = dots[i].className.replace(" active", "");</span><br>
+  <span class="code">}</span><br><br>
+  <span class="comment">// Vis den aktuelle slide og tilføj "active" klassen til den tilsvarende prik</span><br>
+  <span class="code">slides[slideIndex-1].style.display = "block";</span><br>
+  <span class="code">dots[slideIndex-1].className += " active";</span><br>
+<span class="code">}</span>
+      </code>
+    </div>
+  </div>
+</div>
+
+<script>
+// Variabel til at holde styr på den aktuelle slide
+let slideIndex = 1;
+showSlides(slideIndex); // Vis den første slide
+
+// Funktion til at skifte til næste/forrige slide
+function plusSlides(n) {
+  showSlides(slideIndex += n); // Ændrer slideIndex og viser den tilsvarende slide
+}
+
+// Funktion til at gå til en bestemt slide
+function currentSlide(n) {
+  showSlides(slideIndex = n); // Sætter slideIndex til n og viser den tilsvarende slide
+}
+
+// Funktion til at vise den aktuelle slide baseret på slideIndex
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides"); // Henter alle slides
+  let dots = document.getElementsByClassName("dot"); // Henter alle prikker (indikatorer)
+  
+  // Hvis n er større end antallet af slides, start fra første slide
+  if (n > slides.length) {slideIndex = 1}    
+  // Hvis n er mindre end 1, start fra sidste slide
+  if (n < 1) {slideIndex = slides.length}
+  
+  // Skjul alle slides
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  // Fjern "active" klassen fra alle prikker
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  
+  // Vis den aktuelle slide og tilføj "active" klassen til den tilsvarende prik
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+
+</body>
+</html>

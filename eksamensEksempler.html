@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Concepts Demonstration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .section h2 {
+            color: #333;
+        }
+        .section pre {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .section button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+        .section button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="section" id="variables">
+        <h2>Variables</h2>
+        <pre>
+// Eksempel på Variabler
+let antalKunder = 150;
+const produktPris = 99.99;
+let kundeNavn = "Jens Hansen";
+        </pre>
+        <button onclick="demonstrateVariables()">Show Variables in Action</button>
+        <div id="variablesOutput"></div>
+    </div>
+
+    <div class="section" id="datatypes">
+        <h2>Data Types</h2>
+        <pre>
+// Eksempel på Datatyper
+let alder = 30;                        // Number
+let navn = "Anna";                     // String
+let erAktiv = true;                    // Boolean
+let priser = [10.50, 20.75, 30.00];    // Array of numbers
+        </pre>
+        <button onclick="demonstrateDataTypes()">Show Data Types in Action</button>
+        <div id="dataTypesOutput"></div>
+    </div>
+
+    <div class="section" id="loops">
+        <h2>Loops</h2>
+        <pre>
+// Eksempel på Løkker
+for (let i = 0; i < 5; i++) {
+    console.log(`Iteration ${i + 1}`);
+}
+        </pre>
+        <button onclick="demonstrateLoops()">Show Loops in Action</button>
+        <div id="loopsOutput"></div>
+    </div>
+
+    <div class="section" id="conditions">
+        <h2>Conditions</h2>
+        <pre>
+// Eksempel på Betingelser
+let temperatur = 18;
+if (temperatur < 20) {
+    console.log("Det er for koldt.");
+} else {
+    console.log("Temperaturen er behagelig.");
+}
+        </pre>
+        <button onclick="demonstrateConditions()">Show Conditions in Action</button>
+        <div id="conditionsOutput"></div>
+    </div>
+
+    <script>
+        // Demonstrate Variables
+        function demonstrateVariables() {
+            let antalKunder = 150;
+            const produktPris = 99.99;
+            let kundeNavn = "Jens Hansen";
+            let output = `Antal Kunder: ${antalKunder}<br>Produkt Pris: ${produktPris}<br>Kunde Navn: ${kundeNavn}`;
+            document.getElementById('variablesOutput').innerHTML = output;
+        }
+
+        // Demonstrate Data Types
+        function demonstrateDataTypes() {
+            let alder = 30;                        // Number
+            let navn = "Anna";                     // String
+            let erAktiv = true;                    // Boolean
+            let priser = [10.50, 20.75, 30.00];    // Array of numbers
+
+            let output = `Alder: ${alder} (Number)<br>Navn: ${navn} (String)<br>Er Aktiv: ${erAktiv} (Boolean)<br>Priser: ${priser.join(', ')} (Array of Numbers)`;
+            document.getElementById('dataTypesOutput').innerHTML = output;
+        }
+
+        // Demonstrate Loops
+        function demonstrateLoops() {
+            let output = '';
+            for (let i = 0; i < 5; i++) {
+                output += `Iteration ${i + 1}<br>`;
+            }
+            document.getElementById('loopsOutput').innerHTML = output;
+        }
+
+        // Demonstrate Conditions
+        function demonstrateConditions() {
+            let temperatur = 18;
+            let output = '';
+            if (temperatur < 20) {
+                output = "Det er for koldt.";
+            } else {
+                output = "Temperaturen er behagelig.";
+            }
+            document.getElementById('conditionsOutput').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exciting Countdown Timer Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f4f4f7;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 5px #666;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        button:active {
+            box-shadow: 0 2px #666;
+            transform: translateY(4px);
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e63946;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exciting Countdown Timer Game</h1>
+    <p>Try to stop the countdown exactly at 10 seconds!</p>
+    <button id="startButton" onclick="startCountdown()">Start Countdown</button>
+    <button id="stopButton" onclick="stopCountdown()" disabled>Stop</button>
+    <p>Time: <span id="timer">0</span> seconds</p>
+    <p id="result"></p>
+    <p>High Score: <span id="highScore">None</span></p>
+
+    <script>
+        let timerElement = document.getElementById('timer');
+        let highScoreElement = document.getElementById('highScore');
+        let interval;
+        let currentTime = 0;
+        let bestTime = localStorage.getItem('bestTime');
+
+        if (bestTime) {
+            highScoreElement.textContent = bestTime + ' seconds';
+        }
+
+        function startCountdown() {
+            document.getElementById('startButton').disabled = true;
+            document.getElementById('stopButton').disabled = false;
+            currentTime = 0;
+            timerElement.textContent = currentTime;
+
+            interval = setInterval(function() {
+                currentTime++;
+                timerElement.textContent = currentTime;
+                if (currentTime >= 20) {
+                    clearInterval(interval);
+                    document.getElementById('result').textContent = "Time's up! You didn't stop the timer in time.";
+                    resetButtons();
+                }
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            clearInterval(interval);
+            if (currentTime === 10) {
+                document.getElementById('result').textContent = "Perfect! You stopped the timer exactly at 10 seconds!";
+                updateHighScore(currentTime);
+            } else {
+                document.getElementById('result').textContent = `You stopped at ${currentTime} seconds. Try again!`;
+            }
+            resetButtons();
+        }
+
+        function updateHighScore(time) {
+            let savedBestTime = parseInt(localStorage.getItem('bestTime') || Infinity);
+            if (time < savedBestTime) {
+                localStorage.setItem('bestTime', time);
+                highScoreElement.textContent = time + ' seconds';
+            }
+        }
+
+        function resetButtons() {
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+        }
+    </script>
+</body>
+</html>

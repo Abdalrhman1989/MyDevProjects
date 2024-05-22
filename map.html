@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interaktivt Kort med Forklaringer</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <!-- Leaflet Control Geocoder Plugin -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+  <!-- Inline CSS for map container -->
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      margin: 50px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #container {
+      display: flex;
+      max-width: 900px;
+      width: 100%;
+      gap: 20px;
+    }
+    #map {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+    #mapid { height: 100vh; }
+    .leaflet-control-geocoder {
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+    #explanationPopup {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      flex: 1;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .section p, .section ul {
+      margin: 0;
+      color: #555;
+    }
+    .section ul {
+      padding-left: 20px;
+    }
+    .section code {
+      display: block;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .section code .code {
+      color: #d63384; /* Farve til koden */
+    }
+    .section code .comment {
+      color: #6a737d; /* Farve til kommentarer */
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="map">
+    <div id="mapid"></div>
+  </div>
+
+  <div id="explanationPopup">
+    <div class="section">
+      <h3>1. Variabler</h3>
+      <p>Variabler bruges til at gemme data. I dette projekt bruger vi variablen <code class="code">marker</code> til at gemme den aktuelle markør på kortet.</p>
+      <code>
+<span class="comment">// Initialisering af kortet og centrer det over København</span><br>
+<span class="code">const map = L.map('mapid').setView([55.6761, 12.5683], 13);</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>2. Datatyper</h3>
+      <p>Forskellige datatyper bruges i dette projekt. Her bruger vi primært objekter og tal:</p>
+      <ul>
+        <li><strong>Object:</strong> Bruges til at repræsentere markøren på kortet og geokoderen.</li>
+        <li><strong>Number:</strong> Bruges til at gemme koordinaterne for markørens placering.</li>
+      </ul>
+      <code>
+<span class="comment">// Eksempel på brug af objekter og tal</span><br>
+<span class="code">const map = L.map('mapid').setView([55.6761, 12.5683], 13);</span> <span class="comment">// Objekter (kortet) og tal (koordinater)</span>
+      </code>
+    </div>
+    <div class="section">
+      <h3>4. Betingelser</h3>
+      <p>Betingelser gør det muligt for os at udføre visse kodeblokke baseret på specifikke betingelser. I denne kortapplikation bruger vi betingelser til at håndtere fjernelse og tilføjelse af markører samt geokodningsresultater.</p>
+      <code>
+<span class="comment">// Funktion til at opdatere markørens placering</span><br>
+<span class="code">function updateMarker(lat, lng) {</span><br>
+  <span class="code">if (marker) {</span><br>
+    <span class="code">map.removeLayer(marker);</span> <span class="comment">// Betingelse: Fjern eksisterende markør</span><br>
+  <span class="code">}</span><br>
+  <span class="code">marker = L.marker([lat, lng], {draggable: true}).addTo(map)</span><br>
+    <span class="code">.bindPopup("Valgt Placering: <br> Breddegrad: " + lat.toFixed(4) + "<br> Længdegrad: " + lng.toFixed(4)).openPopup();</span><br>
+<span class="code">}</span>
+      </code>
+      <code>
+<span class="comment">// Tilføj geokodning kapaciteter</span><br>
+<span class="code">const geocoder = L.Control.geocoder({</span><br>
+  <span class="code">defaultMarkGeocode: false,</span><br>
+  <span class="code">placeholder: "Søg efter steder...",</span><br>
+  <span class="code">errorMessage: "Intet fundet."</span><br>
+<span class="code">}).on('markgeocode', function(e) {</span><br>
+  <span class="code">const bbox = e.geocode.bbox;</span><br>
+  <span class="code">const poly = L.polygon([</span><br>
+    <span class="code">bbox.getSouthEast(),</span><br>
+    <span class="code">bbox.getNorthEast(),</span><br>
+    <span class="code">bbox.getNorthWest(),</span><br>
+    <span class="code">bbox.getSouthWest()</span><br>
+  <span class="code">]).addTo(map);</span><br>
+  <span class="code">map.fitBounds(poly.getBounds());</span><br>
+  <span class="code">if (marker) {</span><br>
+    <span class="code">map.removeLayer(marker);</span> <span class="comment">// Fjern eksisterende markør</span><br>
+  <span class="code">}</span><br>
+  <span class="code">updateMarker(e.geocode.center.lat, e.geocode.center.lng);</span> <span class="comment">// Sæt ny markør baseret på søgning</span><br>
+<span class="code">}).addTo(map);</span>
+      </code>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialisering af kortet og centrer det over København
+const map = L.map('mapid').setView([55.6761, 12.5683], 13);
+
+// Tilføj OpenStreetMap fliser
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Initialisering af marker variabel til at gemme den aktuelle markør
+let marker;
+
+// Funktion til at opdatere markørens placering
+function updateMarker(lat, lng) {
+  if (marker) {
+    map.removeLayer(marker); // Fjern eksisterende markør
+  }
+  marker = L.marker([lat, lng], {draggable: true}).addTo(map)
+    .bindPopup("Valgt Placering: <br> Breddegrad: " + lat.toFixed(4) + "<br> Længdegrad: " + lng.toFixed(4)).openPopup();
+}
+
+// Klik event til at tilføje/opdatere en markør
+map.on('click', function(e) {
+  updateMarker(e.latlng.lat, e.latlng.lng);
+});
+
+// Tilføj geokodning kapaciteter
+const geocoder = L.Control.geocoder({
+  defaultMarkGeocode: false,
+  placeholder: "Søg efter steder...",
+  errorMessage: "Intet fundet."
+}).on('markgeocode', function(e) {
+  const bbox = e.geocode.bbox;
+  const poly = L.polygon([
+    bbox.getSouthEast(),
+    bbox.getNorthEast(),
+    bbox.getNorthWest(),
+    bbox.getSouthWest()
+  ]).addTo(map);
+  map.fitBounds(poly.getBounds());
+  if (marker) {
+    map.removeLayer(marker); // Fjern eksisterende markør
+  }
+  updateMarker(e.geocode.center.lat, e.geocode.center.lng); // Sæt ny markør baseret på søgning
+}).addTo(map);
+</script>
+
+</body>
+</html>

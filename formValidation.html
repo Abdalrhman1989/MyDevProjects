@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Form Validation Example</h2>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+        <div class="form-group">
+            <button onclick="validateForm()">Submit</button>
+        </div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Function to validate email address
+        function validateEmail(email) {
+            // Regular expression pattern for a valid email address
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Function to validate password
+        function validatePassword(password) {
+            // Check if the password length is at least 8 characters
+            return password.length >= 8;
+        }
+
+        // Function to validate all inputs
+        function validateForm() {
+            // Get the values of the email and password inputs
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageElement = document.getElementById('message');
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                messageElement.textContent = "E-mailadressen er ikke gyldig.";
+                return false;
+            }
+            // Validate password
+            if (!validatePassword(password)) {
+                messageElement.textContent = "Passwordet skal være på mindst 8 tegn.";
+                return false;
+            }
+            // If both validations pass
+            messageElement.style.color = "green";
+            messageElement.textContent = "Begge felter er korrekt udfyldt.";
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forbedret Opgavehåndtering med Forklaringer</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      background-color: #f4f4f9;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      gap: 20px;
+    }
+    .board {
+      display: flex;
+      width: 70%;
+      gap: 20px;
+      flex: 2;
+    }
+    .column {
+      flex: 1;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .column.header {
+      flex: 2;
+    }
+    .column header {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+      color: #333;
+    }
+    .task {
+        
+      width: calc(100% - 20px); /* Adjust width to account for padding */
+      box-sizing: border-box; /* Include padding in the element's width and height */
+
+      padding: 10px;
+      background-color: #e7e7eb;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .task:hover {
+      background-color: #dedee3;
+    }
+    input[type="text"], button {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Include padding in the element's width and height */
+    }
+    button {
+      background-color: #5cba47;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #4aa836;
+    }
+    #explanationPopup {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      flex: 1;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .section p, .section ul {
+      margin: 0;
+      color: #555;
+    }
+    .section ul {
+      padding-left: 20px;
+    }
+    .section code {
+      display: block;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .section code .code {
+      color: #d63384; /* Farve til koden */
+    }
+    .section code .comment {
+      color: #6a737d; /* Farve til kommentarer */
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div class="board">
+      <div class="column header" id="todo">
+        <header>To Do</header>
+        <input type="text" id="new-task" placeholder="Enter a new task">
+        <button onclick="addTask()">Add Task</button>
+      </div>
+      <div class="column" id="doing">
+        <header>Doing</header>
+      </div>
+      <div class="column" id="done">
+        <header>Done</header>
+      </div>
+    </div>
+    <div id="explanationPopup">
+      <div class="section">
+        <h3>1. Variabler</h3>
+        <p>Variabler bruges til at gemme data. I denne opgavehåndtering bruger vi variablen <code class="code">task</code> til at gemme den aktuelle opgave.</p>
+        <code>
+<span class="comment">// Funktion til at tilføje en opgave</span><br>
+<span class="code">function addTask() {</span><br>
+  <span class="code">const input = document.getElementById('new-task');</span><br>
+  <span class="code">const taskText = input.value.trim();</span><br>
+  <span class="code">if (taskText !== '') {</span><br>
+    <span class="code">createTaskElement(taskText, 'todo');</span><br>
+    <span class="code">input.value = '';</span> <span class="comment">// Ryd input efter tilføjelse af opgaven</span><br>
+  <span class="code">}</span><br>
+<span class="code">}</span>
+        </code>
+      </div>
+      <div class="section">
+        <h3>2. Datatyper</h3>
+        <p>Forskellige datatyper bruges i dette projekt. Her bruger vi primært strenge og objekter:</p>
+        <ul>
+          <li><strong>String:</strong> Bruges til at gemme opgavebeskrivelsen.</li>
+          <li><strong>Object:</strong> HTML-elementer, der repræsenterer opgaver og kolonner.</li>
+        </ul>
+        <code>
+<span class="comment">// Eksempel på brug af strenge og objekter</span><br>
+<span class="code">function createTaskElement(text, columnId) {</span><br>
+  <span class="code">const task = document.createElement('div');</span><br>
+  <span class="code">task.className = 'task';</span><br>
+  <span class="code">task.textContent = text;</span><br>
+  <span class="code">task.onclick = function () { moveTask(task, columnId); };</span><br>
+  <span class="code">const column = document.getElementById(columnId);</span><br>
+  <span class="code">column.appendChild(task);</span><br>
+<span class="code">}</span>
+        </code>
+      </div>
+      <div class="section">
+        <h3>4. Betingelser</h3>
+        <p>Betingelser gør det muligt for os at udføre visse kodeblokke baseret på specifikke betingelser. I denne applikation bruger vi betingelser til at flytte opgaver mellem kolonner.</p>
+        <code>
+<span class="comment">// Funktion til at flytte opgaven til næste kolonne</span><br>
+<span class="code">function moveTask(task, currentColumnId) {</span><br>
+  <span class="code">const nextColumnId = getNextColumnId(currentColumnId);</span><br>
+  <span class="code">if (nextColumnId) {</span><br>
+    <span class="code">const nextColumn = document.getElementById(nextColumnId);</span><br>
+    <span class="code">nextColumn.appendChild(task);</span><br>
+    <span class="code">task.onclick = function () { moveTask(task, nextColumnId); };</span><br>
+  <span class="code">}</span><br>
+<span class="code">}</span>
+        </code>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Funktion til at tilføje en opgave
+    function addTask() {
+      const input = document.getElementById('new-task');
+      const taskText = input.value.trim();
+      if (taskText !== '') {
+        createTaskElement(taskText, 'todo');
+        input.value = ''; // Ryd input efter tilføjelse af opgaven
+      }
+    }
+
+    // Funktion til at oprette en opgaveelement
+    function createTaskElement(text, columnId) {
+      const task = document.createElement('div');
+      task.className = 'task';
+      task.textContent = text;
+      task.onclick = function () { moveTask(task, columnId); };
+      const column = document.getElementById(columnId);
+      column.appendChild(task);
+    }
+
+    // Funktion til at flytte opgaven til næste kolonne
+    function moveTask(task, currentColumnId) {
+      const nextColumnId = getNextColumnId(currentColumnId);
+      if (nextColumnId) {
+        const nextColumn = document.getElementById(nextColumnId);
+        nextColumn.appendChild(task);
+        task.onclick = function () { moveTask(task, nextColumnId); };
+      }
+    }
+
+    // Funktion til at få ID for den næste kolonne
+    function getNextColumnId(currentColumnId) {
+      switch (currentColumnId) {
+        case 'todo': return 'doing';
+        case 'doing': return 'done';
+        default: return null; // Ingen videre flytning når i 'done'
+      }
+    }
+  </script>
+</body>
+</html>
